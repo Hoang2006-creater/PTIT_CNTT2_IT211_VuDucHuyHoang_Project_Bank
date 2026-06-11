@@ -46,16 +46,23 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse>
-    updateUser(
-            @Valid @PathVariable Long id,
-            @RequestBody UpdateUserRequest request
+    public ResponseEntity<ApiDataResponse<UserResponse>> updateUser(
+            @PathVariable Long id,
+            @Valid
+            @RequestBody
+            UpdateUserRequest request
     ) {
 
         return ResponseEntity.ok(
-                userService.updateUser(
-                        id,
-                        request
+                new ApiDataResponse<>(
+                        true,
+                        "Cập nhật người dùng thành công",
+                        userService.updateUser(
+                                id,
+                                request
+                        ),
+                        null,
+                        HttpStatus.OK
                 )
         );
     }

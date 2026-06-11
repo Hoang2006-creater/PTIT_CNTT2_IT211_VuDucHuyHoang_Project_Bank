@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ import java.time.LocalDateTime;
 @Transactional
 public class TransactionServiceImpl
         implements TransactionService {
-
+    private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
 
@@ -66,8 +67,10 @@ public class TransactionServiceImpl
             );
         }
 
-        if (!fromAccount.getTransactionPin()
-                .equals(request.getPin())) {
+        if (!passwordEncoder.matches(
+                request.getPin(),
+                fromAccount.getTransactionPin()
+        )) {
 
             throw new RuntimeException(
                     "PIN không chính xác"
@@ -82,6 +85,13 @@ public class TransactionServiceImpl
             );
         }
 
+        if (request.getFromAccountNumber()
+                .equals(request.getToAccountNumber())) {
+
+            throw new RuntimeException(
+                    "Không thể chuyển tiền cho chính mình"
+            );
+        }
         fromAccount.setBalance(
                 fromAccount.getBalance()
                         .subtract(request.getAmount())

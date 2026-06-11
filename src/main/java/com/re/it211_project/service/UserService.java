@@ -1,8 +1,5 @@
 package com.re.it211_project.service;
-import com.re.it211_project.model.dto.request.ForgotPasswordRequest;
-import com.re.it211_project.model.dto.request.RegisterRequest;
-import com.re.it211_project.model.dto.request.UpdateUserRequest;
-import com.re.it211_project.model.dto.request.UserLogin;
+import com.re.it211_project.model.dto.request.*;
 import com.re.it211_project.model.dto.response.JWTResponse;
 import com.re.it211_project.model.dto.response.RegisterResponse;
 import com.re.it211_project.model.dto.response.UserResponse;
@@ -18,5 +15,11 @@ public interface UserService {
     UserResponse getUserById(Long id);
     UserResponse updateUser(Long id, UpdateUserRequest request);
     void deleteUser(Long id);
-    void forgotPassword(ForgotPasswordRequest request);
+    void forgotPassword(
+            ForgotPasswordRequest request
+    );
+
+    void resetPassword(
+            ResetPasswordRequest request
+    );
 }

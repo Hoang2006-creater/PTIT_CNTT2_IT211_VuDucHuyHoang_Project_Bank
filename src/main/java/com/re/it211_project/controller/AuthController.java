@@ -149,10 +149,31 @@ public class AuthController {
     @PostMapping("/forgot-password")
     public ResponseEntity<ApiDataResponse<Object>>
     forgotPassword(
-            @RequestBody ForgotPasswordRequest request
+            @RequestBody
+            ForgotPasswordRequest request
     ) {
 
         userService.forgotPassword(request);
+
+        return ResponseEntity.ok(
+                new ApiDataResponse<>(
+                        true,
+                        "OTP đã được gửi",
+                        null,
+                        null,
+                        HttpStatus.OK
+                )
+        );
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiDataResponse<Object>>
+    resetPassword(
+            @RequestBody
+            ResetPasswordRequest request
+    ) {
+
+        userService.resetPassword(request);
 
         return ResponseEntity.ok(
                 new ApiDataResponse<>(

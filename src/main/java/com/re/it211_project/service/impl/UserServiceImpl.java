@@ -1,16 +1,15 @@
 package com.re.it211_project.service.impl;
 
-import com.re.it211_project.model.dto.request.ForgotPasswordRequest;
-import com.re.it211_project.model.dto.request.RegisterRequest;
-import com.re.it211_project.model.dto.request.UpdateUserRequest;
-import com.re.it211_project.model.dto.request.UserLogin;
+import com.re.it211_project.model.dto.request.*;
 import com.re.it211_project.model.dto.response.JWTResponse;
 import com.re.it211_project.model.dto.response.RegisterResponse;
 import com.re.it211_project.model.dto.response.UserResponse;
 import com.re.it211_project.model.entity.Account;
+import com.re.it211_project.model.entity.PasswordResetOtp;
 import com.re.it211_project.model.entity.Role;
 import com.re.it211_project.model.entity.User;
 import com.re.it211_project.repository.AccountRepository;
+import com.re.it211_project.repository.PasswordResetOtpRepository;
 import com.re.it211_project.repository.RoleRepository;
 import com.re.it211_project.repository.UserRepository;
 import com.re.it211_project.security.jwt.JWTProvider;
@@ -39,7 +38,7 @@ import java.util.Random;
 @Slf4j
 @Transactional
 public class UserServiceImpl implements UserService {
-
+    private final PasswordResetOtpRepository otpRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AccountRepository accountRepository;
@@ -255,11 +254,79 @@ public class UserServiceImpl implements UserService {
 
         User user =
                 userRepository.findByEmail(
+                        request.getEmail()
+                ).orElseThrow(() ->
+                        new RuntimeException(
+                                "Email không tồn tại"
+                        ));
+
+        String otp =
+                String.valueOf(
+                        100000
+                                + new Random()
+                                .nextInt(900000)
+                );
+
+        PasswordResetOtp resetOtp =
+                PasswordResetOtp.builder()
+                        .email(user.getEmail())
+                        .otp(otp)
+                        .expiredAt(
+                                LocalDateTime.now()
+                                        .plusMinutes(5)
+                        )
+                        .used(false)
+                        .build();
+
+        otpRepository.save(resetOtp);
+
+        System.out.println(
+                "OTP của user là: "
+                        + otp
+        );
+
+    }
+    @Override
+    public void resetPassword(
+            ResetPasswordRequest request
+    ) {
+
+        PasswordResetOtp otp =
+                otpRepository
+                        .findByEmailAndOtp(
+                                request.getEmail(),
+                                request.getOtp()
+                        )
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "OTP không hợp lệ"
+                                ));
+
+        if (otp.getUsed()) {
+
+            throw new RuntimeException(
+                    "OTP đã sử dụng"
+            );
+        }
+
+        if (otp.getExpiredAt()
+                .isBefore(
+                        LocalDateTime.now()
+                )) {
+
+            throw new RuntimeException(
+                    "OTP đã hết hạn"
+            );
+        }
+
+        User user =
+                userRepository
+                        .findByEmail(
                                 request.getEmail()
                         )
                         .orElseThrow(() ->
                                 new RuntimeException(
-                                        "Email không tồn tại"
+                                        "User không tồn tại"
                                 ));
 
         user.setPassword(
@@ -269,5 +336,9 @@ public class UserServiceImpl implements UserService {
         );
 
         userRepository.save(user);
+
+        otp.setUsed(true);
+
+        otpRepository.save(otp);
     }
 }

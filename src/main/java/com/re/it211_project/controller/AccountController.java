@@ -52,12 +52,27 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AccountResponse> updateAccount(
-            @Valid @PathVariable Long id,
-            @RequestBody UpdateAccountRequest request
+    public ResponseEntity<ApiDataResponse<AccountResponse>>
+    updateAccount(
+
+            @PathVariable Long id,
+
+            @Valid
+            @RequestBody
+            UpdateAccountRequest request
     ) {
+
         return ResponseEntity.ok(
-                accountService.updateAccount(id, request)
+                new ApiDataResponse<>(
+                        true,
+                        "Cập nhật tài khoản thành công",
+                        accountService.updateAccount(
+                                id,
+                                request
+                        ),
+                        null,
+                        HttpStatus.OK
+                )
         );
     }
 

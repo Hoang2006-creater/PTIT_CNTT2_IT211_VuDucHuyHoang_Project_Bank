@@ -193,3 +193,44 @@ Caused by: org.springframework.data.core.PropertyReferenceException: No property
 2026-06-11T14:33:21.476+07:00  INFO 8704 --- [IT211_Project] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-06-11T14:33:21.493+07:00  INFO 8704 --- [IT211_Project] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2026-06-11T14:33:21.493+07:00  INFO 8704 --- [IT211_Project] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-06-11T14:33:23.753+07:00  INFO 12668 --- [IT211_Project] [restartedMain] c.r.i.It211ProjectApplication            : Starting It211ProjectApplication using Java 21.0.10 with PID 12668 (C:\Users\Admin\OneDrive\Desktop\JavaService\IT211_Project\build\classes\java\main started by Admin in C:\Users\Admin\OneDrive\Desktop\JavaService\IT211_Project)
+2026-06-11T14:33:23.755+07:00  INFO 12668 --- [IT211_Project] [restartedMain] c.r.i.It211ProjectApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-06-11T14:33:23.790+07:00  INFO 12668 --- [IT211_Project] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-11T14:33:23.790+07:00  INFO 12668 --- [IT211_Project] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-11T14:33:24.298+07:00  INFO 12668 --- [IT211_Project] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-11T14:33:24.353+07:00  INFO 12668 --- [IT211_Project] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 48 ms. Found 6 JPA repository interfaces.
+2026-06-11T14:33:24.756+07:00  INFO 12668 --- [IT211_Project] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-06-11T14:33:24.766+07:00  INFO 12668 --- [IT211_Project] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-11T14:33:24.767+07:00  INFO 12668 --- [IT211_Project] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-06-11T14:33:24.806+07:00  INFO 12668 --- [IT211_Project] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1016 ms
+2026-06-11T14:33:24.953+07:00  INFO 12668 --- [IT211_Project] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-06-11T14:33:25.009+07:00  INFO 12668 --- [IT211_Project] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.12.Final
+2026-06-11T14:33:25.404+07:00  INFO 12668 --- [IT211_Project] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-11T14:33:25.431+07:00  INFO 12668 --- [IT211_Project] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-11T14:33:25.661+07:00  INFO 12668 --- [IT211_Project] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5b8030c4
+2026-06-11T14:33:25.663+07:00  INFO 12668 --- [IT211_Project] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-11T14:33:25.702+07:00  WARN 12668 --- [IT211_Project] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-11T14:33:25.717+07:00  INFO 12668 --- [IT211_Project] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/db_cntt2_bank?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.40
+	Default catalog/schema: db_cntt2_bank/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-11T14:33:26.649+07:00  INFO 12668 --- [IT211_Project] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-11T14:33:26.715+07:00  INFO 12668 --- [IT211_Project] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-11T14:33:26.775+07:00  INFO 12668 --- [IT211_Project] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-11T14:33:26.945+07:00  INFO 12668 --- [IT211_Project] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-06-11T14:33:27.021+07:00  WARN 12668 --- [IT211_Project] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-11T14:33:27.430+07:00  INFO 12668 --- [IT211_Project] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-06-11T14:33:27.433+07:00  INFO 12668 --- [IT211_Project] [restartedMain] c.r.i.It211ProjectApplication            : Started It211ProjectApplication in 4.013 seconds (process running for 4.578)
+2026-06-11T14:58:28.949+07:00  INFO 12668 --- [IT211_Project] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-11T14:58:28.949+07:00  INFO 12668 --- [IT211_Project] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-06-11T14:58:28.949+07:00  INFO 12668 --- [IT211_Project] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-11T14:58:28.962+07:00  INFO 12668 --- [IT211_Project] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-06-11T14:58:28.967+07:00  INFO 12668 --- [IT211_Project] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

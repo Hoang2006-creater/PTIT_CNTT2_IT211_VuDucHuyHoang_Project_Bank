@@ -1,5 +1,6 @@
 package com.re.it211_project.security.config;
 
+import com.re.it211_project.security.jwt.JWTAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +11,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final JWTAuthFilter jwtAuthFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -50,14 +53,18 @@ public class SecurityConfig {
                         // ADMIN hoặc CUSTOMER
                         .requestMatchers(
                                 "/api/v1/accounts/**",
-                                "/api/transactions/**"
+                                "/api/v1/transactions/**"
                         ).hasAnyRole(
                                 "ADMIN",
                                 "CUSTOMER"
                         )
                         .anyRequest()
                         .authenticated()
-                );
+                )
+        .addFilterBefore(
+                jwtAuthFilter,
+                UsernamePasswordAuthenticationFilter.class)
+        ;
 
         return http.build();
     }
