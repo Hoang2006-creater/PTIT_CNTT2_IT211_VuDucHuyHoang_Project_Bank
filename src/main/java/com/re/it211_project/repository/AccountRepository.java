@@ -11,5 +11,4 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     boolean existsByAccountNumber(String accountNumber  );
     Optional<Account> findByAccountNumber(String accountNumber);
-    AccountResponse changePin(Long accountId, ChangePinRequest request);
 }
