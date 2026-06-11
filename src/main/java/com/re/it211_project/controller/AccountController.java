@@ -1,5 +1,6 @@
 package com.re.it211_project.controller;
 
+import com.re.it211_project.model.dto.request.ChangePinRequest;
 import com.re.it211_project.model.dto.request.UpdateAccountRequest;
 import com.re.it211_project.model.dto.response.AccountResponse;
 import com.re.it211_project.model.dto.response.ApiDataResponse;
@@ -85,5 +86,21 @@ public class AccountController {
                 )
         );
     }
+    @PutMapping("/{id}/change-pin")
+    public ResponseEntity<ApiDataResponse<AccountResponse>>
+    changePin(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangePinRequest request
+    ) {
 
+        return ResponseEntity.ok(
+                new ApiDataResponse<>(
+                        true,
+                        "Đổi mã PIN thành công",
+                        accountService.changePin(id, request),
+                        null,
+                        HttpStatus.OK
+                )
+        );
+    }
 }

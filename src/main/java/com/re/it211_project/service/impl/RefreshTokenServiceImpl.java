@@ -74,11 +74,24 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
+    public void logout(String token) {
+
+        RefreshToken refreshToken =
+                refreshTokenRepository
+                        .findByToken(token)
+                        .orElseThrow(() ->
+                                new RuntimeException("Token không tồn tại"));
+
+        refreshToken.setRevoked(true);
+
+        refreshTokenRepository.save(refreshToken);
+    }
+    @Override
     public JWTResponse refreshToken(
             RefreshTokenRequest request
     ) {
 
-        RefreshToken refreshToken =
+        RefreshToken oldToken =
                 refreshTokenRepository
                         .findByToken(
                                 request.getRefreshToken()
@@ -89,10 +102,21 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                                 )
                         );
 
-        verifyExpiration(refreshToken);
+        verifyExpiration(oldToken);
 
-        User user = refreshToken.getUser();
+        User user = oldToken.getUser();
 
+        // Thu hồi refresh token cũ
+        oldToken.setRevoked(true);
+        refreshTokenRepository.save(oldToken);
+
+        // Tạo refresh token mới
+        RefreshToken newRefreshToken =
+                createRefreshToken(
+                        user.getUsername()
+                );
+
+        // Tạo access token mới
         String newAccessToken =
                 jwtProvider.generateToken(
                         user.getUsername()
@@ -103,7 +127,9 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .email(user.getEmail())
                 .enabled(user.getIsActive())
                 .token(newAccessToken)
-                .refreshToken(refreshToken.getToken())
+                .refreshToken(
+                        newRefreshToken.getToken()
+                )
                 .build();
     }
 }

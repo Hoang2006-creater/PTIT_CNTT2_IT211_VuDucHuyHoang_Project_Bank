@@ -1,9 +1,6 @@
 package com.re.it211_project.controller;
 
-import com.re.it211_project.model.dto.request.RefreshTokenRequest;
-import com.re.it211_project.model.dto.request.RegisterRequest;
-import com.re.it211_project.model.dto.request.UpdateUserRequest;
-import com.re.it211_project.model.dto.request.UserLogin;
+import com.re.it211_project.model.dto.request.*;
 import com.re.it211_project.model.dto.response.ApiDataResponse;
 import com.re.it211_project.model.dto.response.JWTResponse;
 import com.re.it211_project.model.dto.response.RegisterResponse;
@@ -132,6 +129,39 @@ public class AuthController {
 
         return ResponseEntity.ok(
                 "Xóa user thành công"
+        );
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(
+            @RequestBody LogoutRequest request
+    ) {
+
+        refreshTokenService.logout(
+                request.getRefreshToken()
+        );
+
+        return ResponseEntity.ok(
+                "Đăng xuất thành công"
+        );
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiDataResponse<Object>>
+    forgotPassword(
+            @RequestBody ForgotPasswordRequest request
+    ) {
+
+        userService.forgotPassword(request);
+
+        return ResponseEntity.ok(
+                new ApiDataResponse<>(
+                        true,
+                        "Đặt lại mật khẩu thành công",
+                        null,
+                        null,
+                        HttpStatus.OK
+                )
         );
     }
 }

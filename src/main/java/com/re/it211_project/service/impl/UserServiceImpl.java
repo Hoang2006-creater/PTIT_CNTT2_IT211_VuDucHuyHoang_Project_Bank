@@ -1,5 +1,6 @@
 package com.re.it211_project.service.impl;
 
+import com.re.it211_project.model.dto.request.ForgotPasswordRequest;
 import com.re.it211_project.model.dto.request.RegisterRequest;
 import com.re.it211_project.model.dto.request.UpdateUserRequest;
 import com.re.it211_project.model.dto.request.UserLogin;
@@ -195,6 +196,7 @@ public class UserServiceImpl implements UserService {
         return convertToResponse(updated);
     }
 
+
     @Override
     public void deleteUser(Long id) {
 
@@ -245,5 +247,27 @@ public class UserServiceImpl implements UserService {
         );
 
         return accountNumber;
+    }
+    @Override
+    public void forgotPassword(
+            ForgotPasswordRequest request
+    ) {
+
+        User user =
+                userRepository.findByEmail(
+                                request.getEmail()
+                        )
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Email không tồn tại"
+                                ));
+
+        user.setPassword(
+                passwordEncoder.encode(
+                        request.getNewPassword()
+                )
+        );
+
+        userRepository.save(user);
     }
 }

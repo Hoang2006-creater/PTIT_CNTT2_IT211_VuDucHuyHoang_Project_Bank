@@ -9,4 +9,5 @@ public interface RefreshTokenService {
     RefreshToken createRefreshToken(String username);
     void verifyExpiration(RefreshToken token);
     JWTResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+    void logout(String token);
 }

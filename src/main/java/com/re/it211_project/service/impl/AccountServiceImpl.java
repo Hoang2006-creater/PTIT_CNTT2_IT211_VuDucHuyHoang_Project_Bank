@@ -1,5 +1,6 @@
 package com.re.it211_project.service.impl;
 
+import com.re.it211_project.model.dto.request.ChangePinRequest;
 import com.re.it211_project.model.dto.request.UpdateAccountRequest;
 import com.re.it211_project.model.dto.response.AccountResponse;
 import com.re.it211_project.model.entity.Account;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,7 +20,7 @@ import java.math.BigDecimal;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
-
+    private final PasswordEncoder passwordEncoder;
     @Override
     public Page<AccountResponse> getAllAccounts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -70,5 +72,38 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản"));
         return account.getBalance();
     }
+    @Override
+    public AccountResponse changePin(
+            Long accountId,
+            ChangePinRequest request
+    ) {
 
+        Account account =
+                accountRepository.findById(accountId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Không tìm thấy tài khoản"
+                                ));
+
+        if (!passwordEncoder.matches(
+                request.getOldPin(),
+                account.getTransactionPin()
+        )) {
+
+            throw new RuntimeException(
+                    "PIN cũ không chính xác"
+            );
+        }
+
+        account.setTransactionPin(
+                passwordEncoder.encode(
+                        request.getNewPin()
+                )
+        );
+
+        Account updated =
+                accountRepository.save(account);
+
+        return convertToResponse(updated);
+    }
 }

@@ -5,8 +5,7 @@ import com.re.it211_project.model.dto.response.KycResponse;
 
 public interface KycService {
 
-    KycResponse upload(
-            Long userId,
-            KycUploadRequest request
-    );
+    KycResponse upload(Long userId, KycUploadRequest request);
+    KycResponse approveKyc(Long kycId);
+    KycResponse rejectKyc(Long kycId);
 }
