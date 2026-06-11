@@ -279,18 +279,15 @@ public class UserServiceImpl implements UserService {
                         .build();
 
         otpRepository.save(resetOtp);
-
         System.out.println(
                 "OTP của user là: "
                         + otp
         );
-
     }
     @Override
     public void resetPassword(
             ResetPasswordRequest request
     ) {
-
         PasswordResetOtp otp =
                 otpRepository
                         .findByEmailAndOtp(
@@ -308,17 +305,14 @@ public class UserServiceImpl implements UserService {
                     "OTP đã sử dụng"
             );
         }
-
         if (otp.getExpiredAt()
                 .isBefore(
                         LocalDateTime.now()
                 )) {
-
             throw new RuntimeException(
                     "OTP đã hết hạn"
             );
         }
-
         User user =
                 userRepository
                         .findByEmail(
@@ -328,17 +322,13 @@ public class UserServiceImpl implements UserService {
                                 new RuntimeException(
                                         "User không tồn tại"
                                 ));
-
         user.setPassword(
                 passwordEncoder.encode(
                         request.getNewPassword()
                 )
         );
-
         userRepository.save(user);
-
         otp.setUsed(true);
-
         otpRepository.save(otp);
     }
 }
