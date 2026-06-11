@@ -28,32 +28,31 @@ public class AuthController {
             @Valid @RequestBody RegisterRequest request
     ) {
 
-        return new ResponseEntity<>(
-                new ApiDataResponse<>(
-                        true,
-                        "Đăng ký tài khoản thành công",
-                        userService.register(request),
-                        null,
-                        HttpStatus.CREATED
-                ),
-                HttpStatus.CREATED
-        );
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(
+                        new ApiDataResponse<>(
+                                true,
+                                "Đăng ký tài khoản thành công",
+                                userService.register(request),
+                                null,
+                                HttpStatus.CREATED
+                        )
+                );
     }
 
     @PostMapping("/login")
     public ResponseEntity<ApiDataResponse<JWTResponse>> login(
-            @Valid  @RequestBody UserLogin request
+            @Valid @RequestBody UserLogin request
     ) {
 
-        return new ResponseEntity<>(
+        return ResponseEntity.ok(
                 new ApiDataResponse<>(
                         true,
                         "Đăng nhập thành công",
                         userService.login(request),
                         null,
                         HttpStatus.OK
-                ),
-                HttpStatus.OK
+                )
         );
     }
 
@@ -62,78 +61,86 @@ public class AuthController {
             @RequestBody RefreshTokenRequest request
     ) {
 
-        return new ResponseEntity<>(
+        return ResponseEntity.ok(
                 new ApiDataResponse<>(
                         true,
-                        "Cấp mới access token thành công",
+                        "Cấp mới Access Token thành công",
                         refreshTokenService.refreshToken(request),
                         null,
                         HttpStatus.OK
-                ),
-                HttpStatus.OK
+                )
         );
     }
 
     @GetMapping
-    public ResponseEntity<Page<UserResponse>>
-    getAllUsers(
-
-            @RequestParam(defaultValue = "0")
-            int page,
-
-            @RequestParam(defaultValue = "5")
-            int size
+    public ResponseEntity<ApiDataResponse<Page<UserResponse>>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
     ) {
 
         return ResponseEntity.ok(
-                userService.getAllUsers(
-                        page,
-                        size
+                new ApiDataResponse<>(
+                        true,
+                        "Lấy danh sách người dùng thành công",
+                        userService.getAllUsers(page, size),
+                        null,
+                        HttpStatus.OK
                 )
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse>
-    getUserById(
+    public ResponseEntity<ApiDataResponse<UserResponse>> getUserById(
             @PathVariable Long id
     ) {
 
         return ResponseEntity.ok(
-                userService.getUserById(id)
+                new ApiDataResponse<>(
+                        true,
+                        "Lấy thông tin người dùng thành công",
+                        userService.getUserById(id),
+                        null,
+                        HttpStatus.OK
+                )
         );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse>
-    updateUser(
+    public ResponseEntity<ApiDataResponse<UserResponse>> updateUser(
             @PathVariable Long id,
             @RequestBody UpdateUserRequest request
     ) {
 
         return ResponseEntity.ok(
-                userService.updateUser(
-                        id,
-                        request
+                new ApiDataResponse<>(
+                        true,
+                        "Cập nhật người dùng thành công",
+                        userService.updateUser(id, request),
+                        null,
+                        HttpStatus.OK
                 )
         );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String>
-    deleteUser(
+    public ResponseEntity<ApiDataResponse<Object>> deleteUser(
             @PathVariable Long id
     ) {
 
         userService.deleteUser(id);
 
         return ResponseEntity.ok(
-                "Xóa user thành công"
+                new ApiDataResponse<>(
+                        true,
+                        "Xóa người dùng thành công",
+                        null,
+                        null,
+                        HttpStatus.OK
+                )
         );
     }
-
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(
+    public ResponseEntity<ApiDataResponse<Object>> logout(
             @RequestBody LogoutRequest request
     ) {
 
@@ -142,14 +149,20 @@ public class AuthController {
         );
 
         return ResponseEntity.ok(
-                "Đăng xuất thành công"
+                new ApiDataResponse<>(
+                        true,
+                        "Đăng xuất thành công",
+                        null,
+                        null,
+                        HttpStatus.OK
+                )
         );
     }
 
     @PostMapping("/forgot-password")
     public ResponseEntity<ApiDataResponse<Object>>
     forgotPassword(
-            @RequestBody
+            @Valid @RequestBody
             ForgotPasswordRequest request
     ) {
 
@@ -169,7 +182,7 @@ public class AuthController {
     @PostMapping("/reset-password")
     public ResponseEntity<ApiDataResponse<Object>>
     resetPassword(
-            @RequestBody
+            @Valid @RequestBody
             ResetPasswordRequest request
     ) {
 
