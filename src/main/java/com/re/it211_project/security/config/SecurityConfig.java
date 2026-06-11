@@ -27,7 +27,6 @@ public class SecurityConfig {
 
         return config.getAuthenticationManager();
     }
-
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http
@@ -36,13 +35,26 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+
+                        // Public API
                         .requestMatchers(
                                 "/api/v1/auth/**",
-                                "/api/v1/kyc/**",
-                                "/api/v1/users/**",
-                                "/api/v1/accounts/**"
+                                "/api/v1/kyc/upload"
+                        ).permitAll()
+
+                        // Chỉ ADMIN
+                        .requestMatchers(
+                                "/api/v1/users/**"
+                        ).hasRole("ADMIN")
+
+                        // ADMIN hoặc CUSTOMER
+                        .requestMatchers(
+                                "/api/v1/accounts/**",
+                                "/api/transactions/**"
+                        ).hasAnyRole(
+                                "ADMIN",
+                                "CUSTOMER"
                         )
-                        .permitAll()
                         .anyRequest()
                         .authenticated()
                 );
