@@ -71,4 +71,14 @@ public class JWTProvider {
             throw new RuntimeException(e);
         }
     }
+    public Date getExpiration(String token) {
+        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+    }
 }

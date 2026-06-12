@@ -44,6 +44,9 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0")
     // Source: https://mvnrepository.com/artifact/com.cloudinary/cloudinary-core
     implementation 'com.cloudinary:cloudinary-http5:2.0.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {

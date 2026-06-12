@@ -5,8 +5,10 @@ import com.re.it211_project.model.dto.response.ApiDataResponse;
 import com.re.it211_project.model.dto.response.JWTResponse;
 import com.re.it211_project.model.dto.response.RegisterResponse;
 import com.re.it211_project.model.dto.response.UserResponse;
+import com.re.it211_project.security.jwt.JWTProvider;
 import com.re.it211_project.service.RefreshTokenService;
 import com.re.it211_project.service.UserService;
+import com.re.it211_project.service.impl.TokenBlacklistService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +24,8 @@ public class AuthController {
 
     private final UserService userService;
     private final RefreshTokenService refreshTokenService;
-
+    private final TokenBlacklistService tokenBlacklistService;
+    private final JWTProvider jwtProvider;
     @PostMapping("/register")
     public ResponseEntity<ApiDataResponse<RegisterResponse>> register(
             @Valid @RequestBody RegisterRequest request
@@ -144,9 +147,16 @@ public class AuthController {
             @RequestBody LogoutRequest request
     ) {
 
-        refreshTokenService.logout(
-                request.getRefreshToken()
-        );
+        // 1. blacklist access token (Redis)
+        if (request.getAccessToken() != null) {
+            long exp = jwtProvider.getExpiration(request.getAccessToken()).getTime()
+                    - System.currentTimeMillis();
+
+            tokenBlacklistService.blacklist(request.getAccessToken(), exp);
+        }
+
+        // 2. invalidate refresh token (DB or Redis tùy bạn)
+        refreshTokenService.logout(request.getRefreshToken());
 
         return ResponseEntity.ok(
                 new ApiDataResponse<>(
