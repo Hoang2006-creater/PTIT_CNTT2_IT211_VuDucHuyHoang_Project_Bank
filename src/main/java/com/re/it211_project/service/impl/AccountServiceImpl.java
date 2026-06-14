@@ -72,6 +72,7 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản"));
         return account.getBalance();
     }
+
     @Override
     public AccountResponse changePin(
             Long accountId,

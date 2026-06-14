@@ -80,6 +80,9 @@ public class UserServiceImpl implements UserService {
                 .accountNumber(generateAccountNumber())
                 .balance(BigDecimal.ZERO)
                 .currency("VND")
+                .transactionPin(
+                        passwordEncoder.encode("123456")
+                )
                 .active(true)
                 .createdAt(LocalDateTime.now())
                 .user(savedUser)
